@@ -4,6 +4,7 @@ from .csv_parser import parse_csv
 from .pdf_io import extract_metadata, extract_text_by_page
 from .matcher import match_all
 from .reporter import write_report_csv
+from .anonymizer_metadata import anonymize_metadata
 
 
 def build_parser():
@@ -58,7 +59,19 @@ def run(args):
 
     if args.dry_run:
         print(f"Dry-run: rapport écrit -> {report_path}")
+        return summary
+
+    # Mode apply: anonymiser métadonnées maintenant
+    base = os.path.basename(args.input)
+    name = os.path.splitext(base)[0]
+    output_pdf = os.path.join(args.output_dir, f"{name}-anonymise.pdf")
+    os.makedirs(args.output_dir, exist_ok=True)
+
+    changes = anonymize_metadata(args.input, entries, output_pdf, dry_run=False)
+    print(f"Rapport écrit -> {report_path} (mode apply)")
+    if changes:
+        print(f"Métadonnées modifiées: {list(changes.keys())}")
     else:
-        print(f"Rapport écrit -> {report_path} (mode apply)\nAnonymisation à appliquer dans l'étape suivante")
+        print("Aucune métadonnée modifiée")
 
     return summary
