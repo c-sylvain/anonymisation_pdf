@@ -2,6 +2,8 @@ import argparse
 import os
 from .csv_parser import parse_csv
 from .pdf_io import extract_metadata, extract_text_by_page
+from .matcher import match_all
+from .reporter import write_report_csv
 
 
 def build_parser():
@@ -40,11 +42,23 @@ def run(args):
         "dry_run": bool(args.dry_run),
     }
 
-    if args.dry_run:
-        print("Dry-run: résumé")
-        for k, v in summary.items():
-            print(f" - {k}: {v}")
+    # Matching
+    rows = match_all(entries, pages, metadata)
+
+    # Report path par défaut
+    if args.report:
+        report_path = args.report
     else:
-        print("Mode apply non-implémenté encore (étape suivante)")
+        base = os.path.basename(args.input)
+        name = os.path.splitext(base)[0]
+        report_path = os.path.join(args.output_dir, f"{name}-report.csv")
+
+    mode = "dry-run" if args.dry_run else "apply"
+    write_report_csv(rows, report_path, mode=mode)
+
+    if args.dry_run:
+        print(f"Dry-run: rapport écrit -> {report_path}")
+    else:
+        print(f"Rapport écrit -> {report_path} (mode apply)\nAnonymisation à appliquer dans l'étape suivante")
 
     return summary
