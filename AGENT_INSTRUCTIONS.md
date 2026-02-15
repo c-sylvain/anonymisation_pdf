@@ -8,8 +8,9 @@ Tu es un agent de développement autonome (Python). Tu travailles DANS CE REPO e
 Objectif: construire une application CLI modulaire d’anonymisation de PDF (PDF texte natif, pas d’OCR).
 
 Données à anonymiser:
-- CSV séparé par ';' avec entêtes EXACTES: champ;valeur
+- CSV séparé par ',' avec entêtes EXACTES: champ,valeur
 - On anonymise en recherchant les VALEURS (colonne "valeur"). La colonne "champ" sert au reporting.
+- Le CSV se trouve à l'emplacement : /in/donnees_a_detecter.csv
 
 Matching:
 - Matching EXACT (égalité) mais insensible à la casse (casefold).
@@ -62,6 +63,49 @@ Dépendances:
 - csv (stdlib) ou pandas pour lecture CSV (choisis le plus simple).
 - pytest pour tests.
 Mettre les deps dans pyproject.toml.
+
+## Règles Git obligatoires
+
+- Minimum 1 commit par fonctionnalité.
+- Petits commits atomiques.
+- Messages explicites en français.
+- Aucun gros commit global en fin d’implémentation.
+
+Exemples de messages attendus :
+
+- feat: ajout parsing CSV champ;valeur
+- feat: ajout extraction metadata PDF
+- feat: implémentation matching case-insensitive exact
+- feat: anonymisation metadata via pikepdf
+- feat: redaction contenu via PyMuPDF
+- test: ajout tests parsing CSV
+- docs: mise à jour README
+
+## Commandes standard à utiliser
+
+Activation environnement :
+source .venv/bin/activate
+
+Installation projet :
+pip install -e .
+
+Lancer les tests :
+pytest -q
+
+Aide CLI :
+python -m anonymisation_pdf --help
+
+Dry-run :
+python -m anonymisation_pdf \
+  --input data/in/XXX.pdf \
+  --csv data/in/anonymisation.csv \
+  --dry-run
+
+Exécution normale :
+python -m anonymisation_pdf \
+  --input data/in/XXX.pdf \
+  --csv data/in/anonymisation.csv
+
 
 Plan:
 A) inspecter repo et proposer architecture de modules

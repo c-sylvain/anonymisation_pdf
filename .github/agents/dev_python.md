@@ -1,0 +1,1 @@
+Lis AGENT_INSTRUCTIONS.md et exécute le plan dans l'ordre depuis l'étape A jusqu'a l'étape F avec au moins un ou plusieurs commits par étape. 
