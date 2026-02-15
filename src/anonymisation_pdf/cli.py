@@ -5,6 +5,7 @@ from .pdf_io import extract_metadata, extract_text_by_page
 from .matcher import match_all
 from .reporter import write_report_csv
 from .anonymizer_metadata import anonymize_metadata
+from .anonymizer_content import anonymize_content
 
 
 def build_parser():
@@ -73,5 +74,17 @@ def run(args):
         print(f"Métadonnées modifiées: {list(changes.keys())}")
     else:
         print("Aucune métadonnée modifiée")
+
+    # Anonymisation du contenu (redaction + overlay)
+    try:
+        content_changes = anonymize_content(output_pdf, entries, output_pdf, dry_run=False)
+        # content_changes keys are original values
+        any_changes = any(v.get("occurrences", 0) for v in content_changes.values())
+        if any_changes:
+            print("Contenu anonymisé (redaction) : occurrences trouvées pour certaines valeurs")
+        else:
+            print("Aucune occurrence trouvée dans le contenu")
+    except ImportError as e:
+        print(f"Impossible d'anonymiser le contenu: {e}")
 
     return summary
