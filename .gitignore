@@ -1,0 +1,28 @@
+# venv
+.venv/
+
+# python
+__pycache__/
+*.py[cod]
+*.so
+
+# tests/tools
+.pytest_cache/
+.coverage
+htmlcov/
+
+# build
+dist/
+build/
+*.egg-info/
+
+# local data (pdf input/output)
+data/in/
+data/out/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
