@@ -1,5 +1,7 @@
 # anonymisation_pdf
 
+Fonctionnement pas très concluant, je ne sais plus exactement ce que ce projet fait réelement
+
 Outil CLI pour anonymiser des PDF (texte natif).
 
 Installation (recommandé dans un venv) :
